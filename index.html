@@ -117,7 +117,34 @@ ol.rail::before { content: ""; position: absolute; left: 66px; top: 8px; bottom:
 .progress { font-size: var(--step--1); color: var(--muted); margin: -6px 0 10px; font-variant-numeric: tabular-nums; }
 footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1); }
 
+/* Live progress */
+.live { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: grid; gap: 12px; }
+.live-top { display: flex; align-items: center; gap: 8px; font-size: var(--step--1); color: var(--muted); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.live-top .clock { margin-left: auto; font-variant-numeric: tabular-nums; letter-spacing: 0; text-transform: none; color: var(--ink); white-space: nowrap; }
+.pulse { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.live.on .pulse { background: var(--pine); }
+.live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.live-cell { min-width: 0; }
+.live-cell .lbl { font-size: var(--step--1); color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+.live-cell .val { font-family: var(--font-display); font-size: var(--step-2); font-weight: 700; line-height: 1.2; text-wrap: balance; margin-top: 2px; }
+.live-cell.next .val { color: var(--pine); }
+.live-cell small { display: block; color: var(--muted); font-size: var(--step--1); margin-top: 2px; }
+.bar { height: 6px; background: var(--mist); border-radius: 99px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--pine); border-radius: inherit; transition: width .6s ease; }
+.live-actions { display: flex; gap: 6px 16px; flex-wrap: wrap; align-items: center; font-size: var(--step--1); }
+.live-actions button { margin-left: auto; font: inherit; background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.live.demo { border-color: var(--sun); }
+.stop.past { opacity: .55; }
+.stop.now .dot { box-shadow: 0 0 0 5px color-mix(in srgb, var(--pine) 22%, transparent); }
+.stop.now .title-row::after { content: "Đang ở đây"; font-size: 11px; font-weight: 600; letter-spacing: .04em; background: var(--pine); color: var(--surface); padding: 2px 8px; border-radius: 999px; }
+@media (prefers-reduced-motion: no-preference) {
+  .live.on .pulse { animation: pulse 2s ease-out infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pine) 45%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+}
+
 @media (max-width: 520px) {
+  .live-grid { grid-template-columns: 1fr; gap: 12px; }
+  .live-actions button { margin-left: 0; }
   ol.rail::before { left: 54px; }
   .stop { grid-template-columns: 44px 22px 1fr; }
   .picks { margin-left: 0; }
@@ -127,7 +154,7 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 </style>
-<style>body{margin:0}img{max-width:100%}</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
 
@@ -135,6 +162,15 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
   <div class="eyebrow">13 → 15 · 3 ngày 2 đêm · Lâm Đồng</div>
   <h1>Đà Lạt <em>2026</em></h1>
   <p class="lede">Săn mây, thác, hồ, Tà Nung và ăn sập phố núi.</p>
+  <section class="live" id="live" aria-live="polite" aria-label="Tiến độ chuyến đi">
+    <div class="live-top"><span class="pulse" aria-hidden="true"></span><span id="live-label">Đang tải…</span><span class="clock" id="live-clock"></span></div>
+    <div class="live-grid">
+      <div class="live-cell"><div class="lbl" id="live-cur-lbl">Đang ở</div><div class="val" id="live-cur"></div><small id="live-cur-sub"></small></div>
+      <div class="live-cell next"><div class="lbl" id="live-next-lbl">Tiếp theo</div><div class="val" id="live-next"></div><small id="live-next-sub"></small></div>
+    </div>
+    <div class="bar" aria-hidden="true"><i id="live-bar"></i></div>
+    <div class="live-actions"><a href="#" id="live-jump">Xem trong lịch</a><a href="#" id="live-map" target="_blank" rel="noopener">Chỉ đường điểm tiếp theo</a><button type="button" id="live-demo">Xem thử</button></div>
+  </section>
   <svg class="ridge" viewBox="0 0 800 56" preserveAspectRatio="none" aria-hidden="true">
     <path d="M0 56 L0 40 L60 22 L110 34 L170 10 L230 30 L290 18 L350 36 L420 6 L480 28 L540 20 L600 38 L660 14 L720 30 L800 22 L800 56 Z" fill="currentColor" opacity=".14"/>
     <path d="M0 56 L0 46 L80 36 L150 44 L230 30 L310 44 L390 34 L470 46 L560 32 L650 44 L730 36 L800 42 L800 56 Z" fill="currentColor" opacity=".28"/>
@@ -263,13 +299,13 @@ const DAYS = [
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const link = (text, href) => `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(text)}</a>`;
 
-function stopHTML(s, day) {
+function stopHTML(s, day, i) {
   const name = s.url ? link(s.name, s.url) : esc(s.name);
   const tags = (s.tags || []).map(([t, c]) => `<span class="tag ${c || ""} ${c === "call" ? "tel" : ""}">${esc(t)}</span>`).join("");
   const alt = s.alt ? `<div class="alt">${esc(s.alt[0])} ${s.alt.slice(1).map(([t, u]) => link(t, u)).join(" · ")}</div>` : "";
   const photos = s.photos ? `<div class="photos">${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="900" height="675"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>Ảnh: ${esc(p.by)} · <a href="${p.url}" target="_blank" rel="noopener">${esc(p.lic)}</a></figcaption></figure>`; }).join("")}</div>` : "";
   const picks = s.picks && day.picks ? `<div class="picks"><h3>${esc(day.picksTitle || "Lẩu tối · chọn 1")}</h3><ul>${day.picks.map(([t, u]) => `<li>${link(t, u)}</li>`).join("")}</ul></div>` : "";
-  return `<li class="stop" data-k="${s.k}">
+  return `<li class="stop" data-k="${s.k}" id="s-${day.n}-${i}">
     <time>${s.t}</time><span class="dot" aria-hidden="true"></span>
     <div class="body">
       <div class="title-row"><span class="name">${name}</span><span class="kind">${KIND[s.k]}</span></div>
@@ -281,7 +317,7 @@ function stopHTML(s, day) {
 document.getElementById("main").innerHTML = DAYS.map(d => `
   <section class="day" id="${d.id}">
     <div class="day-head"><span class="day-num">${d.n}</span><h2>${esc(d.title)}</h2><p>${esc(d.sub)}</p></div>
-    <ol class="rail">${d.stops.map(s => stopHTML(s, d)).join("")}</ol>
+    <ol class="rail">${d.stops.map((s, i) => stopHTML(s, d, i)).join("")}</ol>
   </section>`).join("");
 
 // Checklist (lưu tạm trong trình duyệt của người xem)
@@ -305,6 +341,77 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) navLinks.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
 }), { rootMargin: "-40% 0px -55% 0px" });
 document.querySelectorAll("section.day").forEach(s => io.observe(s));
+// Tiến độ trực tiếp, tính theo giờ trên máy người xem
+const TRIP = { year: 2026, month: 10 }; // tháng 11 (JS đếm tháng từ 0)
+const MIN = 60000, OVERNIGHT_AFTER = 90 * MIN, RIDE_HOME = 9 * 60 * MIN;
+const at = (day, hm) => { const [h, m] = hm.split(":").map(Number); return new Date(TRIP.year, TRIP.month, day, h, m); };
+const EVENTS = [{ at: at(12, "23:00"), day: 12, name: "Xe Phương Trang Sài Gòn → Đà Lạt", ride: true }];
+DAYS.forEach(d => d.stops.forEach((s, i) => EVENTS.push({ at: at(+d.n, s.t), day: +d.n, name: s.name, url: s.url, id: `s-${d.n}-${i}` })));
+const pad = n => String(n).padStart(2, "0");
+const hhmm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const dur = ms => {
+  const m = Math.max(1, Math.round(ms / MIN));
+  if (m < 60) return `${m} phút`;
+  const d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), r = m % 60;
+  if (d) return `${d} ngày${h ? ` ${h} giờ` : ""}`;
+  return `${h} giờ${r ? ` ${r} phút` : ""}`;
+};
+
+function tripState(now) {
+  const first = EVENTS[0], last = EVENTS[EVENTS.length - 1];
+  if (now < first.at) return { on: false, label: "Sắp khởi hành", curLbl: "Bây giờ", cur: "Chưa lên đường",
+    curSub: `Còn ${dur(first.at - now)} nữa`, next: first, nextSub: `Tối ${first.day}/11 lúc ${hhmm(first.at)}`, pct: 0 };
+  if (now >= last.at) {
+    const home = now - last.at < RIDE_HOME;
+    return { on: home, label: home ? "Ngày 3/3 · Về Sài Gòn" : "Đã về", curLbl: "Bây giờ",
+      cur: home ? "Trên đường về Sài Gòn" : "Chuyến đi đã kết thúc", curSub: home ? "Giờ tới tùy chuyến xe" : "Hẹn Đà Lạt lần sau",
+      nextText: home ? "Về tới Sài Gòn" : "", nextSub: "", pct: 100, past: EVENTS.length };
+  }
+  let i = 0; while (EVENTS[i + 1] && EVENTS[i + 1].at <= now) i++;
+  const cur = EVENTS[i], next = EVENTS[i + 1];
+  let curName = cur.ride ? "Trên xe lên Đà Lạt" : cur.name, curId = cur.id, curSub = `Từ ${hhmm(cur.at)}`;
+  let label = cur.ride ? "Đêm 12/11 · Trên xe" : `Ngày ${cur.day - 12}/3 · ${cur.day}/11`;
+  if (!cur.ride && next.day !== cur.day && now - cur.at > OVERNIGHT_AFTER) {
+    curName = "Nghỉ đêm ở Hopey Home"; curId = null; curSub = "Ngủ sớm lấy sức"; label = `Đêm ${cur.day}/11 · Nghỉ ngơi`;
+  }
+  return { on: true, label, curLbl: "Đang ở", cur: curName, curSub, curId, next,
+    nextSub: `Còn ${dur(next.at - now)}${next.day !== now.getDate() ? `, sáng ${next.day}/11` : ""}`,
+    pct: Math.min(100, (now - cur.at) / (next.at - cur.at) * 100), past: i + (curId ? 0 : 1) };
+}
+
+let demoAt = null;
+const $ = id => document.getElementById(id);
+function renderLive() {
+  const now = demoAt || new Date(), st = tripState(now);
+  $("live").classList.toggle("on", st.on);
+  $("live").classList.toggle("demo", !!demoAt);
+  $("live-label").textContent = demoAt ? `Xem thử · ${st.label}` : st.label;
+  $("live-clock").textContent = `${demoAt ? "Giả lập" : "Giờ máy bạn"} ${hhmm(now)} · ${now.getDate()}/${now.getMonth() + 1}`;
+  $("live-cur-lbl").textContent = st.curLbl;
+  $("live-cur").textContent = st.cur;
+  $("live-cur-sub").textContent = st.curSub;
+  $("live-next-lbl").textContent = st.next ? `Tiếp theo · ${hhmm(st.next.at)}` : "Tiếp theo";
+  $("live-next").textContent = st.next ? st.next.name : (st.nextText || "Không còn điểm nào");
+  $("live-next-sub").textContent = st.nextSub;
+  $("live-bar").style.width = st.pct + "%";
+  const jumpId = st.curId || (st.next && st.next.id);
+  $("live-jump").hidden = !jumpId;
+  if (jumpId) $("live-jump").href = "#" + jumpId;
+  $("live-map").hidden = !(st.next && st.next.url);
+  if (st.next && st.next.url) $("live-map").href = st.next.url;
+  EVENTS.forEach((e, i) => { if (!e.id) return; const el = $(e.id);
+    el.classList.toggle("now", e.id === st.curId);
+    el.classList.toggle("past", st.past !== undefined && i < st.past && e.id !== st.curId); });
+}
+$("live-demo").addEventListener("click", () => {
+  demoAt = demoAt ? null : at(14, "10:20");
+  $("live-demo").textContent = demoAt ? "Về giờ thật" : "Xem thử";
+  renderLive();
+});
+renderLive();
+setInterval(renderLive, 30000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) renderLive(); });
+
 if (location.hash) { const t = document.getElementById(location.hash.slice(1)); t && t.scrollIntoView(); }
 </script>
 </body>
