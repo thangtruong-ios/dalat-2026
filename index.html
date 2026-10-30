@@ -40,6 +40,15 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* Hero */
 header.hero { padding-block: 48px 28px; }
+
+/* Ảnh bên trái, chỉ hiện khi màn hình đủ rộng để có vùng trống hai bên */
+.side-photo { display: none; }
+@media (min-width: 1200px) {
+  .side-photo { display: block; position: fixed; z-index: 1; top: 84px; left: max(24px, env(safe-area-inset-left, 0px));
+    width: min(380px, calc((100vw - 860px) / 2 - 48px)); aspect-ratio: 1; border-radius: 16px;
+    background: url("img/hero.jpg") center / cover no-repeat var(--mist);
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--ink) 18%, transparent); }
+}
 .eyebrow { font-size: var(--step--1); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-4); line-height: 1; margin: 10px 0 12px; text-wrap: balance; letter-spacing: -.01em; }
 h1 em { font-style: italic; font-weight: 500; color: var(--pine); }
@@ -157,6 +166,8 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
+
+<div class="side-photo" aria-hidden="true"></div>
 
 <header class="hero wrap">
   <div class="eyebrow">13 → 15 · 3 ngày 2 đêm · Lâm Đồng</div>
