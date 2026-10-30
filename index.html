@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Đà Lạt 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,500&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+/* Layout: a single trail down the page — sticky day switcher, each day a vertical time-rail of stops; scenic stops carry reference photos. */
+:root {
+  --bg: #f8faf7;          /* sương sớm */
+  --surface: #ffffff;
+  --ink: #1b2a24;         /* thông già */
+  --muted: #5c6b64;
+  --line: #d6ddd8;
+  --pine: #2f5d4a;
+  --pine-soft: #e2ece6;
+  --sun: #c98a12;         /* dã quỳ */
+  --sun-soft: #fbf0d6;
+  --warn: #a9441f;
+  --warn-soft: #f8e4da;
+  --mist: #e8ecef;
+  --font-display: "Alegreya", Georgia, "Times New Roman", serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --step--1: .8125rem; --step-0: .9375rem; --step-1: 1.125rem; --step-2: 1.5rem; --step-3: 2.25rem; --step-4: clamp(2.6rem, 7vw, 4.2rem);
+}
+/* Chỉ dùng giao diện sáng, kể cả khi máy người xem để chế độ tối */
+:root, :root[data-theme] { color-scheme: light; }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: var(--pine); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Hero */
+header.hero { padding-block: 48px 28px; }
+.eyebrow { font-size: var(--step--1); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-4); line-height: 1; margin: 10px 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+h1 em { font-style: italic; font-weight: 500; color: var(--pine); }
+.lede { color: var(--muted); font-size: var(--step-1); max-width: 56ch; margin: 0; }
+.ridge { display: block; width: 100%; height: 56px; margin-top: 24px; color: var(--pine); }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 8px; }
+.fact { background: var(--surface); padding: 14px 16px; min-width: 0; }
+.fact dt { font-size: var(--step--1); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.fact dd { margin: 4px 0 0; }
+.fact .big { font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; }
+.fact small { color: var(--muted); font-size: var(--step--1); display: block; }
+.tel { font-variant-numeric: tabular-nums; white-space: nowrap; user-select: all; }
+
+/* Day switcher */
+nav.days { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); margin-top: 32px; }
+nav.days .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+nav.days a { flex: none; text-decoration: none; color: var(--muted); font-weight: 500; padding: 6px 12px; border-radius: 999px; font-size: var(--step--1); border: 1px solid transparent; }
+nav.days a:hover { color: var(--ink); border-color: var(--line); }
+nav.days a.on { background: var(--pine-soft); color: var(--pine); border-color: var(--pine-soft); }
+
+/* Day sections */
+section.day { padding-block: 40px 8px; scroll-margin-top: 60px; }
+.day-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.day-num { font-family: var(--font-display); font-size: var(--step-3); font-weight: 700; color: var(--pine); line-height: 1; font-variant-numeric: lining-nums; }
+.day-head h2 { font-family: var(--font-display); font-size: var(--step-2); margin: 0; font-weight: 700; text-wrap: balance; }
+.day-head p { margin: 0; color: var(--muted); flex-basis: 100%; }
+
+ol.rail { list-style: none; margin: 0; padding: 0; position: relative; }
+ol.rail::before { content: ""; position: absolute; left: 66px; top: 8px; bottom: 8px; width: 2px; background: repeating-linear-gradient(var(--line) 0 6px, transparent 6px 10px); }
+.stop { display: grid; grid-template-columns: 54px 26px 1fr; column-gap: 0; padding-block: 10px; }
+.stop time { font-variant-numeric: tabular-nums; font-weight: 600; font-size: var(--step--1); color: var(--muted); padding-top: 3px; text-align: right; padding-right: 4px; }
+.dot { justify-self: center; margin-top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); position: relative; z-index: 1; }
+.stop[data-k="an"] .dot { border-color: var(--sun); background: var(--sun); }
+.stop[data-k="cafe"] .dot { border-color: var(--sun); }
+.stop[data-k="canh"] .dot { border-color: var(--pine); background: var(--pine); }
+.stop[data-k="nghi"] .dot, .stop[data-k="di"] .dot { border-color: var(--muted); }
+.body { min-width: 0; padding-left: 8px; }
+.title-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.name { font-weight: 600; font-size: var(--step-1); line-height: 1.35; }
+.name a { color: var(--ink); text-decoration-color: var(--line); }
+.name a:hover { text-decoration-color: var(--pine); }
+.kind { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.note { color: var(--muted); margin: 2px 0 0; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.tag { font-size: var(--step--1); padding: 2px 9px; border-radius: 999px; background: var(--mist); color: var(--ink); }
+.tag.book { background: var(--sun-soft); color: var(--ink); font-weight: 600; }
+.tag.warn { background: var(--warn-soft); color: var(--warn); font-weight: 600; }
+.tag.call { background: var(--pine-soft); }
+.alt { margin-top: 4px; font-size: var(--step--1); color: var(--muted); }
+
+.photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 8px; margin-top: 12px; }
+.photos figure { margin: 0; min-width: 0; }
+.photos img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; background: var(--mist); }
+.photos figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+.photos figcaption a { color: var(--muted); }
+
+.picks { margin: 14px 0 0 88px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.picks h3 { font-size: var(--step--1); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+.picks ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+/* Extras */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; min-width: 0; }
+.panel h2 { font-family: var(--font-display); font-size: var(--step-2); margin: 0 0 12px; }
+.snacks { width: 100%; border-collapse: collapse; }
+.snacks td { padding: 8px 0; border-top: 1px solid var(--line); vertical-align: top; }
+.snacks td:first-child { font-weight: 600; padding-right: 12px; width: 42%; }
+.snacks tr:first-child td { border-top: 0; }
+.check { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.check label { display: flex; gap: 10px; align-items: flex-start; padding: 7px 4px; border-radius: 8px; cursor: pointer; }
+.check label:hover { background: var(--mist); }
+.check input { accent-color: var(--pine); width: 18px; height: 18px; margin: 2px 0 0; flex: none; }
+.check input:checked + span { color: var(--muted); text-decoration: line-through; }
+.progress { font-size: var(--step--1); color: var(--muted); margin: -6px 0 10px; font-variant-numeric: tabular-nums; }
+footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1); }
+
+@media (max-width: 520px) {
+  ol.rail::before { left: 54px; }
+  .stop { grid-template-columns: 44px 22px 1fr; }
+  .picks { margin-left: 0; }
+  .photos { grid-template-columns: 1fr; }
+  .snacks td:first-child { width: 38%; }
+  .name { font-size: var(--step-0); }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+<style>body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <div class="eyebrow">13 → 15 · 3 ngày 2 đêm · Lâm Đồng</div>
+  <h1>Đà Lạt <em>2026</em></h1>
+  <p class="lede">Săn mây, thác, hồ, Tà Nung và ăn sập phố núi.</p>
+  <svg class="ridge" viewBox="0 0 800 56" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 56 L0 40 L60 22 L110 34 L170 10 L230 30 L290 18 L350 36 L420 6 L480 28 L540 20 L600 38 L660 14 L720 30 L800 22 L800 56 Z" fill="currentColor" opacity=".14"/>
+    <path d="M0 56 L0 46 L80 36 L150 44 L230 30 L310 44 L390 34 L470 46 L560 32 L650 44 L730 36 L800 42 L800 56 Z" fill="currentColor" opacity=".28"/>
+  </svg>
+  <dl class="facts">
+    <div class="fact"><dt>Lưu trú</dt><dd><span class="big"><a href="https://www.google.com/maps/place/?q=place_id:ChIJHdp8pUQTcTEREQay8Tpohj0" target="_blank" rel="noopener">Hopey Home</a></span><small>31 Lữ Gia, Lâm Viên · 6tr / 2 đêm</small><small class="tel">☎ 0375 919 099</small></dd></div>
+    <div class="fact"><dt>Xe đi · Phương Trang</dt><dd><span class="big">SG 23:00 → 07:00</span><small>Tối 12, tới Đà Lạt sáng 13</small></dd></div>
+    <div class="fact"><dt>Xe về · Phương Trang</dt><dd><span class="big">ĐL 10:00 → 18:30</span><small>Sáng 15, có mặt bến lúc 09:30</small></dd></div>
+  </dl>
+</header>
+
+<nav class="days" aria-label="Chuyển ngày">
+  <div class="wrap">
+    <a href="#ngay-13">13 · Thác & hồ</a>
+    <a href="#ngay-14">14 · Tà Nung & Bắc Âu</a>
+    <a href="#ngay-15">15 · Săn mây</a>
+    <a href="#chuan-bi">Ăn vặt & checklist</a>
+  </div>
+</nav>
+
+<main class="wrap" id="main"></main>
+
+<section class="wrap day" id="chuan-bi">
+  <div class="cols">
+    <div class="panel">
+      <h2>Ăn vặt & quà</h2>
+      <table class="snacks"><tbody>
+        <tr><td>Bánh tráng nướng</td><td>Chợ đêm, quanh quảng trường</td></tr>
+        <tr><td>Kem bơ</td><td>Chợ đêm</td></tr>
+        <tr><td>Kem thủ công</td><td>Quanh trung tâm</td></tr>
+        <tr><td>Canelé</td><td><a href="https://www.google.com/maps/place/?q=place_id:ChIJT-RdVfATcTERPAJS64BXlEQ" target="_blank" rel="noopener">Canelé since 2020</a> · 79 Phan Bội Châu</td></tr>
+        <tr><td>Đặc sản mang về</td><td><a href="https://www.google.com/maps/place/?q=place_id:ChIJf8KaTd4TcTERa6h1Dh_Qo2w" target="_blank" rel="noopener">Quoà</a> · 205 Nguyễn Công Trứ</td></tr>
+      </tbody></table>
+    </div>
+    <div class="panel">
+      <h2>Checklist trước chuyến đi</h2>
+      <p class="progress" id="progress"></p>
+      <ul class="check" id="check"></ul>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  Giờ mở cửa lấy từ Google Maps, có thể thay đổi. Nên gọi xác nhận trước những chỗ quan trọng.<br>
+  Ảnh tham khảo từ Wikimedia Commons, ghi nguồn dưới từng ảnh.
+</footer>
+
+<script>
+const M = id => "https://www.google.com/maps/place/?q=place_id:" + id;
+const KIND = { an: "Ăn", cafe: "Cà phê", canh: "Ngắm cảnh", nghi: "Nghỉ", di: "Di chuyển", mua: "Mua quà" };
+const PH = {
+  datanla: { src: "img/datanla.jpg", alt: "Thác Datanla đổ qua ghềnh đá giữa rừng", by: "Du Tran", lic: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Datanla_Waterfall_1.jpg" },
+  sled: { src: "img/datanla-sled.jpg", alt: "Máng trượt xuyên rừng ở thác Datanla", by: "thalling55", lic: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Alpine_Sled,_Datanla_Waterfall.jpg" },
+  tl1: { src: "img/tuyenlam1.jpg", alt: "Mặt hồ Tuyền Lâm giữa đồi thông", by: "Diane Selwyn", lic: "Public domain", url: "https://commons.wikimedia.org/wiki/File:Tuyen_Lam_Lake_01.jpg" },
+  tl2: { src: "img/tuyenlam2.jpg", alt: "Hồ Tuyền Lâm nhìn từ bờ", by: "Diane Selwyn", lic: "Public domain", url: "https://commons.wikimedia.org/wiki/File:Tuyen_Lam_Lake_02.jpg" },
+  cd1: { src: "img/chodem1.jpg", pos: "50% 60%", alt: "Chợ đêm Đà Lạt đông người, đèn trang trí rực rỡ", by: "Phương Huy", lic: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:%C4%90%C3%A0_L%E1%BA%A1t_th2n2022_(ch%E1%BB%A3_%C4%91%C3%AAm)_(4).jpg" },
+  cd2: { src: "img/chodem2.jpg", alt: "Mặt tiền chợ Đà Lạt, nơi chợ đêm họp phía trước", by: "Bem photography", lic: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Ch%E1%BB%A3_%C4%90%C3%A0_L%E1%BA%A1t_(9267357992).jpg" },
+  lv: { src: "img/lamvien.jpg", alt: "Quảng trường Lâm Viên nhìn ra hồ Xuân Hương dưới trời xanh", by: "EA", lic: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_%C4%90%C3%A0_L%E1%BA%A1t.JPG" },
+  lv2: { src: "img/lamvien2.jpg", alt: "Mái vòm hình nụ hoa dã quỳ ở quảng trường Lâm Viên", by: "Damian Vo", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_square_(August_7,_2018)_(42208026670).jpg" },
+};
+
+const DAYS = [
+  { id: "ngay-13", n: "13", title: "Thác, hồ & chợ đêm", sub: "Xuống xe là đi luôn: cà phê rừng thông, thác Datanla, chiều ngắm hoàng hôn ở Tuyền Lâm.",
+    stops: [
+      { t: "07:00", k: "di", name: "Tới bến xe Đà Lạt", note: "Gửi đồ ở homestay hoặc mang theo" },
+      { t: "07:15", k: "cafe", name: "Phong Miên quán", url: M("ChIJR6cUOAATcTERG-flw1Tex04"), note: "Cà phê giữa rừng thông", tags: [["Mở 7:00"]] },
+      { t: "08:30", k: "an", name: "Mì nấm Shiitake", url: M("ChIJ7ZoPoG0TcTERDjSxp82acd8"), tags: [["Google ghi mở 12:00, gọi trước", "warn"], ["☎ 0934 187 856", "call"]] },
+      { t: "09:30", k: "canh", name: "Thác Datanla", url: M("ChIJQTO5pKEUcTERZcAVKbeOzvg"), note: "Nên chơi máng trượt", tags: [["7:30–16:30"]], photos: ["datanla", "sled"] },
+      { t: "11:45", k: "an", name: "Hap Hap Riverside Kitchen", url: M("ChIJkynFJk8TcTERGxklaGUhNXo"), tags: [["Đặt bàn", "book"], ["☎ 0867 184 168", "call"]],
+        alt: ["Trưa thay thế (ốc nhồi):", ["Ốc nhồi 33 Gốc – 197 Hai Bà Trưng", M("ChIJA6G1TA0TcTERxWaROirI4y0")], ["Ốc 33 – 157 Hai Bà Trưng", M("ChIJPZBb0WITcTER2jcpr1FHEbU")]] },
+      { t: "13:00", k: "cafe", name: "1/2 Circle Coffee", url: M("ChIJk0kQJgATcTER5HQJIYAPqBw"), note: "Cùng hẻm 4 Đặng Thái Thân với Hap Hap" },
+      { t: "14:00", k: "nghi", name: "Check-in Hopey Home", note: "Nghỉ ngơi" },
+      { t: "15:30", k: "canh", name: "Hồ Tuyền Lâm", url: M("ChIJm1asQ0xrcTER3KoyuLidX4E"), note: "Ở lại ngắm hoàng hôn", photos: ["tl1", "tl2"] },
+      { t: "18:30", k: "an", name: "Nướng Mậu Dịch – 28B Trần Hưng Đạo", url: M("ChIJR7Jp9NUTcTERTNZet5Krotg"), tags: [["Đặt bàn", "book"], ["Mở từ 16:00"], ["☎ 0983 444 318", "call"]] },
+      { t: "20:30", k: "canh", name: "Chợ đêm Đà Lạt", url: M("ChIJw-dBTv8TcTERPCSnIa35zyE"), note: "Bánh tráng nướng, kem bơ", photos: ["cd2"] },
+    ] },
+  { id: "ngay-14", n: "14", title: "Tà Nung, Bắc Âu & lẩu", sub: "Sáng chạy ra Tà Nung khi trời còn mát, chiều quay về phố chụp hàng thông, tối lẩu và mua quà.",
+    stops: [
+      { t: "07:00", k: "an", name: "Mì Quảng 14 Yersin", url: M("ChIJX8mYgxgTcTER6XSC7wBnFt8"), note: "Hết hàng là đóng, đi sớm",
+        alt: ["Hoặc:", ["Bánh mì xíu mại Phương – 40 Nguyễn Trãi", M("ChIJT_UJVAATcTERZ7WpZXnQb-k")]] },
+      { t: "08:00", k: "canh", name: "Cao nguyên hoa Đà Lạt", url: M("ChIJy0IMmMttcTERFDhXzzS1jB4"), note: "Có xe trượt", tags: [["7:00–16:30"]] },
+      { t: "10:00", k: "canh", name: "Thôn 13 Tà Nung", url: M("ChIJe4UCcsFtcTERMB_YeWUubOs"), note: "Đồng cỏ, check-in" },
+      { t: "10:45", k: "cafe", name: "Gạch since 1988", url: M("ChIJ-QaRRgBtcTEREo8ELt68SvE"), note: "Cà phê view thung lũng" },
+      { t: "12:00", k: "an", name: "Lẩu cá tầm Ngư Sơn – 34 Trần Nhật Duật", url: M("ChIJS7d29dkTcTERzFMHVTGztQc"), note: "Nằm trên đường về",
+        alt: ["Trưa thay thế:", ["Cơm niêu Ba Mẹ Con", M("ChIJXVXMtlYTcTERu65VBkM7rgM")], ["Nem nướng Bà Nghĩa", M("ChIJ4xeeKU0TcTERyzKI_NftaUA")], ["Nem nướng Phượng", M("ChIJcSDYvC0TcTERpWEGjcxU90o")]] },
+      { t: "13:00", k: "nghi", name: "Nghỉ trưa, ghé mua Canelé since 2020", url: M("ChIJT-RdVfATcTERPAJS64BXlEQ"), tags: [["Canelé mở 9:00–19:00"]] },
+      { t: "15:00", k: "an", name: "Bánh mì củi – Sườn bò hầm", url: M("ChIJY6tKYQATcTERkejRvsfPWhM"), tags: [["Đóng cửa 16:00", "warn"]] },
+      { t: "15:45", k: "canh", name: "Cung đường Bắc Âu – Nguyễn Hữu Cảnh", url: M("ChIJ68FSbAATcTERc3pMCDq30tw"), note: "Chụp ảnh hàng thông" },
+      { t: "17:00", k: "cafe", name: "Chạm Sóng coffee", url: M("ChIJZS-6VwATcTERKILibkw2Jb0"), note: "View tháp truyền hình" },
+      { t: "19:00", k: "an", name: "Lẩu tối", note: "Chọn 1 quán bên dưới, đông người nên đặt trước", picks: true },
+      { t: "20:45", k: "canh", name: "Quảng trường Lâm Viên", url: M("ChIJKQb-oyQTcTERiVn-etOO62Y"), note: "Dạo đêm, ghé Tháp VinaPhone gần đó", photos: ["lv", "lv2"],
+        alt: ["", ["Tháp VinaPhone trên Maps", "https://www.google.com/maps/search/Thap+VinaPhone+Da+Lat"]] },
+      { t: "21:00", k: "mua", name: "Quoà – 205 Nguyễn Công Trứ", url: M("ChIJf8KaTd4TcTERa6h1Dh_Qo2w"), note: "Mua quà tối nay, sáng 15 không kịp", tags: [["Mở đến 21:30", "warn"]] },
+    ],
+    picks: [
+      ["Lẩu mực lá é Nẫu Ơi – 91 Hai Bà Trưng", M("ChIJKU53XgATcTER_vpLVZDtmgs")],
+      ["Lẩu sườn bò kim chi – Tú Mơ quán, 39/3 Ngô Quyền", M("ChIJ1dvjLAATcTERBSQvfzN8xIU")],
+      ["Lẩu gà lá é Tao Ngộ – 02 Phạm Hồng Thái", M("ChIJmXlT0UcTcTERcDSQ57OEVjE")],
+      ["Lẩu gà rau Lỗ Bình – Hẻm 86 Khe Sanh", M("ChIJOaJVGIkTcTER-4a72t478As")],
+    ] },
+  { id: "ngay-15", n: "15", title: "Săn mây & về", sub: "Dậy sớm lên đồi Măng Lin đón bình minh, ăn sáng rồi trả phòng ra bến.",
+    stops: [
+      { t: "04:45", k: "di", name: "Xuất phát", note: "Khoảng 25–30 phút, mang áo ấm và đèn pin" },
+      { t: "05:30", k: "canh", name: "Đồi Măng Lin", url: M("ChIJT_l8in5tcTERWwBB1HlWKco"), note: "Bình minh và săn mây" },
+      { t: "07:15", k: "an", name: "Bún bò thố đá O Chín – 23 Nguyễn Chí Thanh", url: M("ChIJIbynKwATcTER2_eIqeNc3mI"), note: "Gần khu Hòa Bình" },
+      { t: "07:45", k: "cafe", name: "Cà phê khu Hòa Bình", note: "Uống nhanh" },
+      { t: "08:30", k: "nghi", name: "Về homestay, checkout" },
+      { t: "09:30", k: "di", name: "Có mặt ở bến xe", tags: [["Xe chạy 10:00", "warn"]] },
+    ] },
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const link = (text, href) => `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(text)}</a>`;
+
+function stopHTML(s, day) {
+  const name = s.url ? link(s.name, s.url) : esc(s.name);
+  const tags = (s.tags || []).map(([t, c]) => `<span class="tag ${c || ""} ${c === "call" ? "tel" : ""}">${esc(t)}</span>`).join("");
+  const alt = s.alt ? `<div class="alt">${esc(s.alt[0])} ${s.alt.slice(1).map(([t, u]) => link(t, u)).join(" · ")}</div>` : "";
+  const photos = s.photos ? `<div class="photos">${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="900" height="675"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>Ảnh: ${esc(p.by)} · <a href="${p.url}" target="_blank" rel="noopener">${esc(p.lic)}</a></figcaption></figure>`; }).join("")}</div>` : "";
+  const picks = s.picks && day.picks ? `<div class="picks"><h3>Lẩu tối · chọn 1</h3><ul>${day.picks.map(([t, u]) => `<li>${link(t, u)}</li>`).join("")}</ul></div>` : "";
+  return `<li class="stop" data-k="${s.k}">
+    <time>${s.t}</time><span class="dot" aria-hidden="true"></span>
+    <div class="body">
+      <div class="title-row"><span class="name">${name}</span><span class="kind">${KIND[s.k]}</span></div>
+      ${s.note ? `<p class="note">${esc(s.note)}</p>` : ""}
+      ${tags ? `<div class="tags">${tags}</div>` : ""}${alt}${photos}
+    </div></li>${picks ? `<li>${picks}</li>` : ""}`;
+}
+
+document.getElementById("main").innerHTML = DAYS.map(d => `
+  <section class="day" id="${d.id}">
+    <div class="day-head"><span class="day-num">${d.n}</span><h2>${esc(d.title)}</h2><p>${esc(d.sub)}</p></div>
+    <ol class="rail">${d.stops.map(s => stopHTML(s, d)).join("")}</ol>
+  </section>`).join("");
+
+// Checklist (lưu tạm trong trình duyệt của người xem)
+const TODO = [
+  "Đặt bàn Hap Hap (trưa 13)", "Đặt bàn Nướng Mậu Dịch (tối 13)", "Gọi xác nhận giờ mở Mì nấm Shiitake",
+  "Chốt quán lẩu tối 14 (đông người nên đặt trước)", "Thuê xe máy / đặt xe đi Tà Nung & Măng Lin",
+  "Mua quà tối ngày 14, sáng 15 không kịp", "Áo ấm, đèn pin cho buổi săn mây",
+];
+let done = {};
+try { done = JSON.parse(localStorage.getItem("dalat26-check") || "{}"); } catch (e) {}
+const ul = document.getElementById("check"), prog = document.getElementById("progress");
+ul.innerHTML = TODO.map((t, i) => `<li><label for="c${i}"><input type="checkbox" id="c${i}" ${done[i] ? "checked" : ""}><span>${esc(t)}</span></label></li>`).join("");
+const upd = () => { const n = TODO.filter((_, i) => done[i]).length; prog.textContent = `Đã xong ${n}/${TODO.length}`; };
+ul.addEventListener("change", e => { done[e.target.id.slice(1)] = e.target.checked; try { localStorage.setItem("dalat26-check", JSON.stringify(done)); } catch (e) {} upd(); });
+upd();
+
+// Đánh dấu ngày đang xem trên thanh chuyển ngày
+const navLinks = [...document.querySelectorAll("nav.days a")];
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) navLinks.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
+}), { rootMargin: "-40% 0px -55% 0px" });
+document.querySelectorAll("section.day").forEach(s => io.observe(s));
+if (location.hash) { const t = document.getElementById(location.hash.slice(1)); t && t.scrollIntoView(); }
+</script>
+</body>
+</html>
