@@ -142,7 +142,7 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
   <dl class="facts">
     <div class="fact"><dt>Lưu trú</dt><dd><span class="big"><a href="https://www.google.com/maps/place/?q=place_id:ChIJHdp8pUQTcTEREQay8Tpohj0" target="_blank" rel="noopener">Hopey Home</a></span><small>31 Lữ Gia, Lâm Viên · 6tr / 2 đêm</small><small class="tel">☎ 0375 919 099</small></dd></div>
     <div class="fact"><dt>Xe đi · Phương Trang</dt><dd><span class="big">SG 23:00 → 07:00</span><small>Tối 12, tới Đà Lạt sáng 13</small></dd></div>
-    <div class="fact"><dt>Xe về · Phương Trang</dt><dd><span class="big">ĐL 10:00 → 18:30</span><small>Sáng 15, có mặt bến lúc 09:30</small></dd></div>
+    <div class="fact"><dt>Xe về · Phương Trang</dt><dd><span class="big">Có mặt bến 12:00</span><small>Trưa 15 · giờ xe chạy xem trên vé</small></dd></div>
   </dl>
 </header>
 
@@ -150,7 +150,7 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
   <div class="wrap">
     <a href="#ngay-13">13 · Thác & hồ</a>
     <a href="#ngay-14">14 · Tà Nung & Bắc Âu</a>
-    <a href="#ngay-15">15 · Săn mây</a>
+    <a href="#ngay-15">15 · Săn mây & ga cổ</a>
     <a href="#chuan-bi">Ăn vặt & checklist</a>
   </div>
 </nav>
@@ -193,6 +193,8 @@ const PH = {
   cd1: { src: "img/chodem1.jpg", pos: "50% 60%", alt: "Chợ đêm Đà Lạt đông người, đèn trang trí rực rỡ", by: "Phương Huy", lic: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:%C4%90%C3%A0_L%E1%BA%A1t_th2n2022_(ch%E1%BB%A3_%C4%91%C3%AAm)_(4).jpg" },
   cd2: { src: "img/chodem2.jpg", alt: "Mặt tiền chợ Đà Lạt, nơi chợ đêm họp phía trước", by: "Bem photography", lic: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Ch%E1%BB%A3_%C4%90%C3%A0_L%E1%BA%A1t_(9267357992).jpg" },
   lv: { src: "img/lamvien.jpg", alt: "Quảng trường Lâm Viên nhìn ra hồ Xuân Hương dưới trời xanh", by: "EA", lic: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_%C4%90%C3%A0_L%E1%BA%A1t.JPG" },
+  ga1: { src: "img/gadalat1.jpg", alt: "Toàn cảnh nhà ga Đà Lạt mái nhọn màu vàng", by: "Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(28706757664).jpg" },
+  ga2: { src: "img/gadalat2.jpg", alt: "Mặt tiền Ga Đà Lạt với ba chóp mái và đồng hồ", by: "Tran Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(31489402388).jpg" },
   lv2: { src: "img/lamvien2.jpg", alt: "Mái vòm hình nụ hoa dã quỳ ở quảng trường Lâm Viên", by: "Damian Vo", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_square_(August_7,_2018)_(42208026670).jpg" },
 };
 
@@ -227,7 +229,7 @@ const DAYS = [
       { t: "19:00", k: "an", name: "Lẩu tối", note: "Chọn 1 quán bên dưới, đông người nên đặt trước", picks: true },
       { t: "20:45", k: "canh", name: "Quảng trường Lâm Viên", url: M("ChIJKQb-oyQTcTERiVn-etOO62Y"), note: "Dạo đêm, ghé Tháp VinaPhone gần đó", photos: ["lv", "lv2"],
         alt: ["", ["Tháp VinaPhone trên Maps", "https://www.google.com/maps/search/Thap+VinaPhone+Da+Lat"]] },
-      { t: "21:00", k: "mua", name: "Quoà – 205 Nguyễn Công Trứ", url: M("ChIJf8KaTd4TcTERa6h1Dh_Qo2w"), note: "Mua quà tối nay, sáng 15 không kịp", tags: [["Mở đến 21:30", "warn"]] },
+      { t: "21:00", k: "mua", name: "Quoà – 205 Nguyễn Công Trứ", url: M("ChIJf8KaTd4TcTERa6h1Dh_Qo2w"), note: "Mua quà chính ở đây, sáng 15 bổ sung thêm ở chợ Đà Lạt", tags: [["Mở đến 21:30", "warn"]] },
     ],
     picks: [
       ["Lẩu mực lá é Nẫu Ơi – 91 Hai Bà Trưng", M("ChIJKU53XgATcTER_vpLVZDtmgs")],
@@ -235,14 +237,26 @@ const DAYS = [
       ["Lẩu gà lá é Tao Ngộ – 02 Phạm Hồng Thái", M("ChIJmXlT0UcTcTERcDSQ57OEVjE")],
       ["Lẩu gà rau Lỗ Bình – Hẻm 86 Khe Sanh", M("ChIJOaJVGIkTcTER-4a72t478As")],
     ] },
-  { id: "ngay-15", n: "15", title: "Săn mây & về", sub: "Dậy sớm lên đồi Măng Lin đón bình minh, ăn sáng rồi trả phòng ra bến.",
+  { id: "ngay-15", n: "15", title: "Săn mây, ga cổ & về", sub: "Dậy sớm lên đồi Măng Lin đón bình minh, về nghỉ và trả phòng, rồi thong thả dạo Ga Đà Lạt, chợ Đà Lạt và ăn trưa trước khi ra bến lúc 12:00.",
     stops: [
       { t: "04:45", k: "di", name: "Xuất phát", note: "Khoảng 25–30 phút, mang áo ấm và đèn pin" },
       { t: "05:30", k: "canh", name: "Đồi Măng Lin", url: M("ChIJT_l8in5tcTERWwBB1HlWKco"), note: "Bình minh và săn mây" },
       { t: "07:15", k: "an", name: "Bún bò thố đá O Chín – 23 Nguyễn Chí Thanh", url: M("ChIJIbynKwATcTER2_eIqeNc3mI"), note: "Gần khu Hòa Bình" },
-      { t: "07:45", k: "cafe", name: "Cà phê khu Hòa Bình", note: "Uống nhanh" },
-      { t: "08:30", k: "nghi", name: "Về homestay, checkout" },
-      { t: "09:30", k: "di", name: "Có mặt ở bến xe", tags: [["Xe chạy 10:00", "warn"]] },
+      { t: "07:45", k: "cafe", name: "Cà phê khu Hòa Bình", note: "Ngồi thong thả, không cần vội nữa" },
+      { t: "08:30", k: "nghi", name: "Về homestay nghỉ, tắm rửa, thu dọn đồ" },
+      { t: "09:45", k: "nghi", name: "Checkout, gửi hành lý lại Hopey Home", tags: [["Hỏi trước chuyện gửi đồ", "warn"], ["☎ 0375 919 099", "call"]] },
+      { t: "10:00", k: "canh", name: "Ga Đà Lạt", url: "https://www.google.com/maps/search/Ga+Da+Lat+Quang+Trung", note: "Ga xe lửa cổ kiến trúc Pháp, chụp ảnh với toa tàu cũ", photos: ["ga1", "ga2"] },
+      { t: "10:45", k: "mua", name: "Chợ Đà Lạt", url: "https://www.google.com/maps/search/Cho+Da+Lat", note: "Mua thêm mứt, trái cây, atiso nếu tối 14 chưa mua đủ" },
+      { t: "11:15", k: "an", name: "Ăn trưa", note: "Chọn 1 quán bên dưới, ăn nhanh khoảng 30 phút", picks: true },
+      { t: "11:45", k: "di", name: "Về homestay lấy đồ, ra bến xe" },
+      { t: "12:00", k: "di", name: "Có mặt ở bến xe Phương Trang", tags: [["Có mặt 12:00", "warn"]] },
+    ],
+    picksTitle: "Trưa ngày 15 · chọn 1",
+    picks: [
+      ["Nem nướng Bà Nghĩa (gợi ý chính: nhanh, đúng vị Đà Lạt)", M("ChIJ4xeeKU0TcTERyzKI_NftaUA")],
+      ["Cơm niêu Ba Mẹ Con (nếu muốn bữa cơm no trước chuyến xe dài)", M("ChIJXVXMtlYTcTERu65VBkM7rgM")],
+      ["Nem nướng Phượng", M("ChIJcSDYvC0TcTERpWEGjcxU90o")],
+      ["Ốc nhồi 33 Gốc – 197 Hai Bà Trưng", M("ChIJA6G1TA0TcTERxWaROirI4y0")],
     ] },
 ];
 
@@ -254,7 +268,7 @@ function stopHTML(s, day) {
   const tags = (s.tags || []).map(([t, c]) => `<span class="tag ${c || ""} ${c === "call" ? "tel" : ""}">${esc(t)}</span>`).join("");
   const alt = s.alt ? `<div class="alt">${esc(s.alt[0])} ${s.alt.slice(1).map(([t, u]) => link(t, u)).join(" · ")}</div>` : "";
   const photos = s.photos ? `<div class="photos">${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="900" height="675"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>Ảnh: ${esc(p.by)} · <a href="${p.url}" target="_blank" rel="noopener">${esc(p.lic)}</a></figcaption></figure>`; }).join("")}</div>` : "";
-  const picks = s.picks && day.picks ? `<div class="picks"><h3>Lẩu tối · chọn 1</h3><ul>${day.picks.map(([t, u]) => `<li>${link(t, u)}</li>`).join("")}</ul></div>` : "";
+  const picks = s.picks && day.picks ? `<div class="picks"><h3>${esc(day.picksTitle || "Lẩu tối · chọn 1")}</h3><ul>${day.picks.map(([t, u]) => `<li>${link(t, u)}</li>`).join("")}</ul></div>` : "";
   return `<li class="stop" data-k="${s.k}">
     <time>${s.t}</time><span class="dot" aria-hidden="true"></span>
     <div class="body">
@@ -274,7 +288,8 @@ document.getElementById("main").innerHTML = DAYS.map(d => `
 const TODO = [
   "Đặt bàn Hap Hap (trưa 13)", "Đặt bàn Nướng Mậu Dịch (tối 13)", "Gọi xác nhận giờ mở Mì nấm Shiitake",
   "Chốt quán lẩu tối 14 (đông người nên đặt trước)", "Thuê xe máy / đặt xe đi Tà Nung & Măng Lin",
-  "Mua quà tối ngày 14, sáng 15 không kịp", "Áo ấm, đèn pin cho buổi săn mây",
+  "Mua quà tối ngày 14 (sáng 15 bổ sung ở chợ Đà Lạt)", "Hỏi Hopey Home cho gửi hành lý sau checkout sáng 15",
+  "Đổi vé xe về sang chuyến trưa 15 (có mặt bến 12:00)", "Áo ấm, đèn pin cho buổi săn mây",
 ];
 let done = {};
 try { done = JSON.parse(localStorage.getItem("dalat26-check") || "{}"); } catch (e) {}
