@@ -106,7 +106,7 @@ ol.rail::before { content: ""; position: absolute; left: 66px; top: 8px; bottom:
 .photos figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
 .photos figcaption a { color: var(--muted); }
 
-.picks { margin: 14px 0 0 88px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.picks { position: relative; z-index: 1; margin: 14px 0 0 88px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
 .picks h3 { font-size: var(--step--1); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
 .picks ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 
@@ -156,7 +156,8 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
   .live-actions button { margin-left: 0; }
   ol.rail::before { left: 54px; }
   .stop { grid-template-columns: 44px 22px 1fr; }
-  .picks { margin-left: 0; }
+  .picks { margin-left: 74px; padding: 12px 14px; }
+  .picks ul { padding-left: 16px; }
   .photos { grid-template-columns: 1fr; }
   .snacks td:first-child { width: 38%; }
   .name { font-size: var(--step-0); }
