@@ -95,7 +95,7 @@ ol.rail::before { content: ""; position: absolute; left: 66px; top: 8px; bottom:
 .photos figure { margin: 0; min-width: 0; }
 .photos img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; background: var(--mist); }
 /* Ảnh dọc (chụp điện thoại): luôn 2 cột, khung 3:4 để không cắt mất chữ trên ảnh */
-.photos.tall { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 460px; }
+.photos.tall { grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); max-width: calc(var(--n, 2) * 230px); }
 .photos.tall img { aspect-ratio: 3 / 4; object-position: center 40%; }
 .photos figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
 .photos figcaption a { color: var(--muted); }
@@ -153,6 +153,9 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
   .picks { margin-left: 74px; padding: 12px 14px; }
   .picks ul { padding-left: 16px; }
   .photos { grid-template-columns: 1fr; }
+  /* 3 ảnh dọc trở lên: vuốt ngang trên điện thoại thay vì thu nhỏ còn 3 cột */
+  .photos.tall.many { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 46%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; }
+  .photos.tall.many figure { scroll-snap-align: start; }
   .snacks td:first-child { width: 38%; }
   .name { font-size: var(--step-0); }
 }
@@ -236,6 +239,9 @@ const PH = {
   lv: { src: "img/lamvien.jpg", alt: "Quảng trường Lâm Viên nhìn ra hồ Xuân Hương dưới trời xanh", by: "EA", lic: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_%C4%90%C3%A0_L%E1%BA%A1t.JPG" },
   pm1: { src: "img/phongmien1.jpg", tall: true, alt: "Ban công gỗ của Phong Miên quán nhìn ra rừng thông và thung lũng", by: "Ảnh tham khảo" },
   pm2: { src: "img/phongmien2.jpg", tall: true, alt: "Ghế gỗ trên ban công Phong Miên quán giữa rừng thông", by: "Ảnh tham khảo" },
+  sh1: { src: "img/shiitake1.jpg", tall: true, alt: "Mì trộn sợi dẹt với trứng lòng đào ở Mì nấm Shiitake", by: "Ảnh: @ninhealing" },
+  sh2: { src: "img/shiitake2.jpg", tall: true, alt: "Tô mì nước nấm với trứng và rau cải", by: "Ảnh: @ninhealing" },
+  sh3: { src: "img/shiitake3.jpg", tall: true, alt: "Bàn gỗ giữa hàng tre xanh ở quán Mì nấm Shiitake", by: "Ảnh: @ninhealing" },
   ga1: { src: "img/gadalat1.jpg", alt: "Toàn cảnh nhà ga Đà Lạt mái nhọn màu vàng", by: "Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(28706757664).jpg" },
   ga2: { src: "img/gadalat2.jpg", alt: "Mặt tiền Ga Đà Lạt với ba chóp mái và đồng hồ", by: "Tran Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(31489402388).jpg" },
   lv2: { src: "img/lamvien2.jpg", alt: "Mái vòm hình nụ hoa dã quỳ ở quảng trường Lâm Viên", by: "Damian Vo", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_square_(August_7,_2018)_(42208026670).jpg" },
@@ -246,7 +252,7 @@ const DAYS = [
     stops: [
       { t: "07:00", k: "di", name: "Tới bến xe Đà Lạt", note: "Gửi đồ ở homestay hoặc mang theo" },
       { t: "07:15", k: "cafe", name: "Phong Miên quán", url: M("ChIJR6cUOAATcTERG-flw1Tex04"), note: "Cà phê giữa rừng thông", tags: [["Mở 7:00"]], photos: ["pm1", "pm2"] },
-      { t: "08:30", k: "an", name: "Mì nấm Shiitake", url: M("ChIJ7ZoPoG0TcTERDjSxp82acd8"), tags: [["Google ghi mở 12:00, gọi trước", "warn"], ["☎ 0934 187 856", "call"]] },
+      { t: "08:30", k: "an", name: "Mì nấm Shiitake", url: M("ChIJ7ZoPoG0TcTERDjSxp82acd8"), tags: [["Google ghi mở 12:00, gọi trước", "warn"], ["☎ 0934 187 856", "call"]], photos: ["sh1", "sh2", "sh3"] },
       { t: "09:30", k: "canh", name: "Thác Datanla", url: M("ChIJQTO5pKEUcTERZcAVKbeOzvg"), note: "Nên chơi máng trượt", tags: [["7:30–16:30"]], photos: ["datanla", "sled"] },
       { t: "11:45", k: "an", name: "Hap Hap Riverside Kitchen", url: M("ChIJkynFJk8TcTERGxklaGUhNXo"), tags: [["Đặt bàn", "book"], ["☎ 0867 184 168", "call"]],
         alt: ["Trưa thay thế (ốc nhồi):", ["Ốc nhồi 33 Gốc – 197 Hai Bà Trưng", M("ChIJA6G1TA0TcTERxWaROirI4y0")], ["Ốc 33 – 157 Hai Bà Trưng", M("ChIJPZBb0WITcTER2jcpr1FHEbU")]] },
@@ -312,7 +318,8 @@ function stopHTML(s, day, i) {
   const alt = s.alt ? `<div class="alt">${esc(s.alt[0])} ${s.alt.slice(1).map(([t, u]) => link(t, u)).join(" · ")}</div>` : "";
   const tall = s.photos && s.photos.every(k => PH[k].tall);
   const credit = p => p.url ? `Ảnh: ${esc(p.by)} · <a href="${p.url}" target="_blank" rel="noopener">${esc(p.lic)}</a>` : esc(p.by);
-  const photos = s.photos ? `<div class="photos${tall ? " tall" : ""}">${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="${p.tall ? 600 : 900}" height="${p.tall ? 800 : 675}"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>${credit(p)}</figcaption></figure>`; }).join("")}</div>` : "";
+  const many = tall && s.photos.length > 2;
+  const photos = s.photos ? `<div class="photos${tall ? " tall" : ""}${many ? " many" : ""}"${tall ? ` style="--n:${s.photos.length}"` : ""}>${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="${p.tall ? 600 : 900}" height="${p.tall ? 800 : 675}"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>${credit(p)}</figcaption></figure>`; }).join("")}</div>` : "";
   const picks = s.picks && day.picks ? `<div class="picks"><h3>${esc(day.picksTitle || "Lẩu tối · chọn 1")}</h3><ul>${day.picks.map(([t, u]) => `<li>${link(t, u)}</li>`).join("")}</ul></div>` : "";
   return `<li class="stop" data-k="${s.k}" id="s-${day.n}-${i}">
     <time>${s.t}</time><span class="dot" aria-hidden="true"></span>
