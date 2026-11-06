@@ -94,6 +94,9 @@ ol.rail::before { content: ""; position: absolute; left: 66px; top: 8px; bottom:
 .photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 8px; margin-top: 12px; }
 .photos figure { margin: 0; min-width: 0; }
 .photos img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; background: var(--mist); }
+/* Ảnh dọc (chụp điện thoại): luôn 2 cột, khung 3:4 để không cắt mất chữ trên ảnh */
+.photos.tall { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 460px; }
+.photos.tall img { aspect-ratio: 3 / 4; object-position: center 40%; }
 .photos figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
 .photos figcaption a { color: var(--muted); }
 
@@ -221,9 +224,6 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: var(--step--1
 
 <script>
 const M = id => "https://www.google.com/maps/place/?q=place_id:" + id;
-// API key Google Maps Platform (Maps JavaScript API + Places API (New)), giới hạn theo domain.
-// Để trống thì trang chỉ hiện ảnh có sẵn, không gọi Google.
-const GOOGLE_MAPS_KEY = "";
 const HOPEY = M("ChIJHdp8pUQTcTEREQay8Tpohj0");
 const KIND = { an: "Ăn", cafe: "Cà phê", canh: "Ngắm cảnh", nghi: "Nghỉ", di: "Di chuyển", mua: "Mua quà" };
 const PH = {
@@ -234,6 +234,8 @@ const PH = {
   cd1: { src: "img/chodem1.jpg", pos: "50% 60%", alt: "Chợ đêm Đà Lạt đông người, đèn trang trí rực rỡ", by: "Phương Huy", lic: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:%C4%90%C3%A0_L%E1%BA%A1t_th2n2022_(ch%E1%BB%A3_%C4%91%C3%AAm)_(4).jpg" },
   cd2: { src: "img/chodem2.jpg", alt: "Mặt tiền chợ Đà Lạt, nơi chợ đêm họp phía trước", by: "Bem photography", lic: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Ch%E1%BB%A3_%C4%90%C3%A0_L%E1%BA%A1t_(9267357992).jpg" },
   lv: { src: "img/lamvien.jpg", alt: "Quảng trường Lâm Viên nhìn ra hồ Xuân Hương dưới trời xanh", by: "EA", lic: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_%C4%90%C3%A0_L%E1%BA%A1t.JPG" },
+  pm1: { src: "img/phongmien1.jpg", tall: true, alt: "Ban công gỗ của Phong Miên quán nhìn ra rừng thông và thung lũng", by: "Ảnh tham khảo" },
+  pm2: { src: "img/phongmien2.jpg", tall: true, alt: "Ghế gỗ trên ban công Phong Miên quán giữa rừng thông", by: "Ảnh tham khảo" },
   ga1: { src: "img/gadalat1.jpg", alt: "Toàn cảnh nhà ga Đà Lạt mái nhọn màu vàng", by: "Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(28706757664).jpg" },
   ga2: { src: "img/gadalat2.jpg", alt: "Mặt tiền Ga Đà Lạt với ba chóp mái và đồng hồ", by: "Tran Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(31489402388).jpg" },
   lv2: { src: "img/lamvien2.jpg", alt: "Mái vòm hình nụ hoa dã quỳ ở quảng trường Lâm Viên", by: "Damian Vo", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_square_(August_7,_2018)_(42208026670).jpg" },
@@ -243,7 +245,7 @@ const DAYS = [
   { id: "ngay-13", n: "13", title: "Thác, hồ & chợ đêm", sub: "Xuống xe là đi luôn: cà phê rừng thông, thác Datanla, chiều ngắm hoàng hôn ở Tuyền Lâm.",
     stops: [
       { t: "07:00", k: "di", name: "Tới bến xe Đà Lạt", note: "Gửi đồ ở homestay hoặc mang theo" },
-      { t: "07:15", k: "cafe", name: "Phong Miên quán", url: M("ChIJR6cUOAATcTERG-flw1Tex04"), note: "Cà phê giữa rừng thông", tags: [["Mở 7:00"]] },
+      { t: "07:15", k: "cafe", name: "Phong Miên quán", url: M("ChIJR6cUOAATcTERG-flw1Tex04"), note: "Cà phê giữa rừng thông", tags: [["Mở 7:00"]], photos: ["pm1", "pm2"] },
       { t: "08:30", k: "an", name: "Mì nấm Shiitake", url: M("ChIJ7ZoPoG0TcTERDjSxp82acd8"), tags: [["Google ghi mở 12:00, gọi trước", "warn"], ["☎ 0934 187 856", "call"]] },
       { t: "09:30", k: "canh", name: "Thác Datanla", url: M("ChIJQTO5pKEUcTERZcAVKbeOzvg"), note: "Nên chơi máng trượt", tags: [["7:30–16:30"]], photos: ["datanla", "sled"] },
       { t: "11:45", k: "an", name: "Hap Hap Riverside Kitchen", url: M("ChIJkynFJk8TcTERGxklaGUhNXo"), tags: [["Đặt bàn", "book"], ["☎ 0867 184 168", "call"]],
@@ -308,16 +310,16 @@ function stopHTML(s, day, i) {
   const name = s.url ? link(s.name, s.url) : esc(s.name);
   const tags = (s.tags || []).map(([t, c]) => `<span class="tag ${c || ""} ${c === "call" ? "tel" : ""}">${esc(t)}</span>`).join("");
   const alt = s.alt ? `<div class="alt">${esc(s.alt[0])} ${s.alt.slice(1).map(([t, u]) => link(t, u)).join(" · ")}</div>` : "";
-  const pid = !s.photos && s.url && s.url.includes("place_id:") ? s.url.split("place_id:")[1] : "";
-  const gphotos = pid && GOOGLE_MAPS_KEY ? `<div class="photos" data-gplace="${esc(pid)}" data-name="${esc(s.name)}"></div>` : "";
-  const photos = s.photos ? `<div class="photos">${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="900" height="675"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>Ảnh: ${esc(p.by)} · <a href="${p.url}" target="_blank" rel="noopener">${esc(p.lic)}</a></figcaption></figure>`; }).join("")}</div>` : "";
+  const tall = s.photos && s.photos.every(k => PH[k].tall);
+  const credit = p => p.url ? `Ảnh: ${esc(p.by)} · <a href="${p.url}" target="_blank" rel="noopener">${esc(p.lic)}</a>` : esc(p.by);
+  const photos = s.photos ? `<div class="photos${tall ? " tall" : ""}">${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="${p.tall ? 600 : 900}" height="${p.tall ? 800 : 675}"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>${credit(p)}</figcaption></figure>`; }).join("")}</div>` : "";
   const picks = s.picks && day.picks ? `<div class="picks"><h3>${esc(day.picksTitle || "Lẩu tối · chọn 1")}</h3><ul>${day.picks.map(([t, u]) => `<li>${link(t, u)}</li>`).join("")}</ul></div>` : "";
   return `<li class="stop" data-k="${s.k}" id="s-${day.n}-${i}">
     <time>${s.t}</time><span class="dot" aria-hidden="true"></span>
     <div class="body">
       <div class="title-row"><span class="name">${name}</span><span class="kind">${KIND[s.k]}</span></div>
       ${s.note ? `<p class="note">${esc(s.note)}</p>` : ""}
-      ${tags ? `<div class="tags">${tags}</div>` : ""}${alt}${photos}${gphotos}
+      ${tags ? `<div class="tags">${tags}</div>` : ""}${alt}${photos}
     </div></li>${picks ? `<li>${picks}</li>` : ""}`;
 }
 
@@ -326,36 +328,6 @@ document.getElementById("main").innerHTML = DAYS.map(d => `
     <div class="day-head"><span class="day-num">${d.n}</span><h2>${esc(d.title)}</h2><p>${esc(d.sub)}</p></div>
     <ol class="rail">${d.stops.map((s, i) => stopHTML(s, d, i)).join("")}</ol>
   </section>`).join("");
-
-// Ảnh Google Maps: chỉ tải khi điểm sắp cuộn tới, mỗi điểm tối đa 2 ảnh, ghi tên người chụp theo điều khoản Google
-if (GOOGLE_MAPS_KEY) {
-  (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({ key: GOOGLE_MAPS_KEY, v: "weekly", language: "vi" });
-
-  const loadGPhotos = async box => {
-    try {
-      const { Place } = await google.maps.importLibrary("places");
-      const place = new Place({ id: box.dataset.gplace });
-      await place.fetchFields({ fields: ["photos"] });
-      const list = (place.photos || []).slice(0, 2);
-      if (!list.length) return box.remove();
-      box.innerHTML = list.map(p => {
-        const a = (p.authorAttributions || [])[0];
-        const by = a ? (a.uri ? link(a.displayName, a.uri) : esc(a.displayName)) : "Google Maps";
-        return `<figure><img src="${esc(p.getURI({ maxWidth: 800 }))}" alt="Ảnh ${esc(box.dataset.name)}" loading="lazy" width="800" height="600"><figcaption>Ảnh: ${by} · Google Maps</figcaption></figure>`;
-      }).join("");
-    } catch (err) {
-      console.warn("Không tải được ảnh Google Maps cho", box.dataset.name, err);
-      box.remove();
-    }
-  };
-  const gio = new IntersectionObserver(entries => entries.forEach(en => {
-    if (!en.isIntersecting) return;
-    gio.unobserve(en.target);
-    const box = en.target.querySelector(".photos[data-gplace]");
-    if (box) loadGPhotos(box);
-  }), { rootMargin: "800px 0px" });
-  document.querySelectorAll(".photos[data-gplace]").forEach(box => gio.observe(box.closest(".stop")));
-}
 
 // Checklist (lưu tạm trong trình duyệt của người xem)
 const TODO = [

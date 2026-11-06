@@ -4,10 +4,6 @@ Trang lịch trình chuyến đi Đà Lạt 3 ngày 2 đêm (13 → 15, có mặ
 
 Mở `index.html` bằng trình duyệt là xem được, không cần cài gì.
 
-## Ảnh Google Maps
-
-Quán ăn, cà phê và các điểm chưa có ảnh riêng sẽ tự lấy tối đa 2 ảnh từ Google Maps (qua Google Places API) khi người xem cuộn tới. Muốn bật, điền API key vào hằng `GOOGLE_MAPS_KEY` trong `index.html`. Key cần bật **Maps JavaScript API** và **Places API (New)**, và nên giới hạn theo domain của trang. Để trống key thì trang không gọi Google.
-
 ## Nguồn ảnh
 
 Ảnh tham khảo lấy từ Wikimedia Commons:
@@ -22,3 +18,5 @@ Quán ăn, cà phê và các điểm chưa có ảnh riêng sẽ tự lấy tố
 | `img/lamvien2.jpg` | Damian Vo | CC BY-SA 2.0 |
 | `img/gadalat1.jpg` | Anh Khoa | CC BY-SA 2.0 |
 | `img/gadalat2.jpg` | Tran Anh Khoa | CC BY-SA 2.0 |
+
+Ảnh `img/phongmien1.jpg`, `img/phongmien2.jpg`: ảnh tham khảo do chủ chuyến đi tự chọn, chỉ dùng trong nhóm.
