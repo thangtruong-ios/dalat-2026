@@ -19,4 +19,4 @@ Mở `index.html` bằng trình duyệt là xem được, không cần cài gì.
 | `img/gadalat1.jpg` | Anh Khoa | CC BY-SA 2.0 |
 | `img/gadalat2.jpg` | Tran Anh Khoa | CC BY-SA 2.0 |
 
-Ảnh `img/phongmien*.jpg`, `img/haphap*.jpg`, `img/halfcircle*.jpg`, `img/hopey*.jpg`, `img/maudich*.jpg`, `img/caonguyenhoa*.jpg`, `img/gach*.jpg`, `img/thon13-*.jpg`, `img/bacau*.jpg`, `img/chamsong*.jpg` và `img/shiitake*.jpg` (ảnh Shiitake của @ninhealing): ảnh tham khảo do chủ chuyến đi tự chọn, chỉ dùng trong nhóm.
+Ảnh `img/phongmien*.jpg`, `img/haphap*.jpg`, `img/halfcircle*.jpg`, `img/hopey*.jpg`, `img/maudich*.jpg`, `img/caonguyenhoa*.jpg`, `img/gach*.jpg`, `img/thon13-*.jpg`, `img/bacau*.jpg`, `img/chamsong*.jpg`, `img/manglin*.jpg` và `img/shiitake*.jpg` (ảnh Shiitake của @ninhealing): ảnh tham khảo do chủ chuyến đi tự chọn, chỉ dùng trong nhóm.
