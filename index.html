@@ -97,6 +97,8 @@ ol.rail::before { content: ""; position: absolute; left: 66px; top: 8px; bottom:
 /* Ảnh dọc (chụp điện thoại): luôn 2 cột, khung 3:4 để không cắt mất chữ trên ảnh */
 .photos.tall { grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); max-width: calc(var(--n, 2) * 230px); }
 .photos.tall img { aspect-ratio: 3 / 4; object-position: center 40%; }
+/* Ảnh khác tỉ lệ (vd. vuông) trong dải ảnh dọc: hiện trọn ảnh, không cắt chữ ở hai mép */
+.photos img.whole { object-fit: contain; }
 .photos figcaption { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
 .photos figcaption a { color: var(--muted); }
 
@@ -244,6 +246,9 @@ const PH = {
   sh3: { src: "img/shiitake3.jpg", tall: true, alt: "Bàn gỗ giữa hàng tre xanh ở quán Mì nấm Shiitake", by: "Ảnh: @ninhealing" },
   hh1: { src: "img/haphap1.jpg", tall: true, alt: "Cột biển hiệu Hap Hap với các bảng Cabin lounge, Cá tầm, Pizza, Pasta giữa rừng cây", by: "Ảnh tham khảo" },
   hh2: { src: "img/haphap2.jpg", tall: true, alt: "Quầy nướng pizza ngoài trời của Hap Hap Riverside Kitchen dưới chiếc thuyền đỏ", by: "Ảnh tham khảo" },
+  hc1: { src: "img/halfcircle1.jpg", tall: true, alt: "Cầu thang xoắn và hai tầng hình bán nguyệt của 1/2 Circle Coffee giữa rừng thông", by: "Ảnh tham khảo" },
+  hc2: { src: "img/halfcircle2.jpg", tall: true, alt: "Khối nhà màu đen hình bán nguyệt của 1/2 Circle dưới trời xanh", by: "Ảnh tham khảo" },
+  hc3: { src: "img/halfcircle3.jpg", tall: true, whole: true, alt: "Phòng kính cong dưới mái đen phủ cỏ của 1/2 Circle Coffee", by: "Ảnh tham khảo" },
   ga1: { src: "img/gadalat1.jpg", alt: "Toàn cảnh nhà ga Đà Lạt mái nhọn màu vàng", by: "Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(28706757664).jpg" },
   ga2: { src: "img/gadalat2.jpg", alt: "Mặt tiền Ga Đà Lạt với ba chóp mái và đồng hồ", by: "Tran Anh Khoa", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:Dalat_railway_station_(31489402388).jpg" },
   lv2: { src: "img/lamvien2.jpg", alt: "Mái vòm hình nụ hoa dã quỳ ở quảng trường Lâm Viên", by: "Damian Vo", lic: "CC BY-SA 2.0", url: "https://commons.wikimedia.org/wiki/File:L%C3%A2m_Vi%C3%AAn_square_(August_7,_2018)_(42208026670).jpg" },
@@ -258,7 +263,7 @@ const DAYS = [
       { t: "09:30", k: "canh", name: "Thác Datanla", url: M("ChIJQTO5pKEUcTERZcAVKbeOzvg"), note: "Nên chơi máng trượt", tags: [["7:30–16:30"]], photos: ["datanla", "sled"] },
       { t: "11:45", k: "an", name: "Hap Hap Riverside Kitchen", url: M("ChIJkynFJk8TcTERGxklaGUhNXo"), tags: [["Đặt bàn", "book"], ["☎ 0867 184 168", "call"]],
         alt: ["Trưa thay thế (ốc nhồi):", ["Ốc nhồi 33 Gốc – 197 Hai Bà Trưng", M("ChIJA6G1TA0TcTERxWaROirI4y0")], ["Ốc 33 – 157 Hai Bà Trưng", M("ChIJPZBb0WITcTER2jcpr1FHEbU")]], photos: ["hh1", "hh2"] },
-      { t: "13:00", k: "cafe", name: "1/2 Circle Coffee", url: M("ChIJk0kQJgATcTER5HQJIYAPqBw"), note: "Cùng hẻm 4 Đặng Thái Thân với Hap Hap" },
+      { t: "13:00", k: "cafe", name: "1/2 Circle Coffee", url: M("ChIJk0kQJgATcTER5HQJIYAPqBw"), note: "Cùng hẻm 4 Đặng Thái Thân với Hap Hap", tags: [["Mở 7:30–18:00"]], photos: ["hc1", "hc2", "hc3"] },
       { t: "14:00", k: "nghi", name: "Check-in Hopey Home", url: HOPEY, note: "Nghỉ ngơi" },
       { t: "15:30", k: "canh", name: "Hồ Tuyền Lâm", url: M("ChIJm1asQ0xrcTER3KoyuLidX4E"), note: "Ở lại ngắm hoàng hôn", photos: ["tl1", "tl2"] },
       { t: "18:30", k: "an", name: "Nướng Mậu Dịch – 28B Trần Hưng Đạo", url: M("ChIJR7Jp9NUTcTERTNZet5Krotg"), tags: [["Đặt bàn", "book"], ["Mở từ 16:00"], ["☎ 0983 444 318", "call"]] },
@@ -321,7 +326,7 @@ function stopHTML(s, day, i) {
   const tall = s.photos && s.photos.every(k => PH[k].tall);
   const credit = p => p.url ? `Ảnh: ${esc(p.by)} · <a href="${p.url}" target="_blank" rel="noopener">${esc(p.lic)}</a>` : esc(p.by);
   const many = tall && s.photos.length > 2;
-  const photos = s.photos ? `<div class="photos${tall ? " tall" : ""}${many ? " many" : ""}"${tall ? ` style="--n:${s.photos.length}"` : ""}>${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="${p.tall ? 600 : 900}" height="${p.tall ? 800 : 675}"${p.pos ? ` style="object-position:${p.pos}"` : ""}><figcaption>${credit(p)}</figcaption></figure>`; }).join("")}</div>` : "";
+  const photos = s.photos ? `<div class="photos${tall ? " tall" : ""}${many ? " many" : ""}"${tall ? ` style="--n:${s.photos.length}"` : ""}>${s.photos.map(k => { const p = PH[k]; return `<figure><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" width="${p.tall ? 600 : 900}" height="${p.tall ? 800 : 675}"${p.pos ? ` style="object-position:${p.pos}"` : ""}${p.whole ? ` class="whole"` : ""}><figcaption>${credit(p)}</figcaption></figure>`; }).join("")}</div>` : "";
   const picks = s.picks && day.picks ? `<div class="picks"><h3>${esc(day.picksTitle || "Lẩu tối · chọn 1")}</h3><ul>${day.picks.map(([t, u]) => `<li>${link(t, u)}</li>`).join("")}</ul></div>` : "";
   return `<li class="stop" data-k="${s.k}" id="s-${day.n}-${i}">
     <time>${s.t}</time><span class="dot" aria-hidden="true"></span>
